@@ -8,6 +8,7 @@
 module Filemanager
   module Controller
 		def set_up
+      @controller = self
 	    @lock_path = FM_LOCK_PATH
 	    @source = params[:source]
 	    @source = decode(@source) unless @source.nil?
@@ -89,7 +90,7 @@ module Filemanager
 	  def paste
 	    return error if session[:remove].nil? || session[:source].nil?
 	    begin
-	      session[:remove] == true ? FileUtils.mv(session[:source], @current_path) : FileUtils.cp_r(session[:source], @current_path)
+	      session[:remove] ? FileUtils.mv(session[:source], @current_path) : FileUtils.cp_r(session[:source], @current_path)
 	      session[:remove] = nil
 	      session[:source] = nil
 	      success
@@ -178,20 +179,20 @@ module Filemanager
 	      target
 	    else
 	      if target.is_a?(Array)
-	        target.map{|i| to.nil? ? i : Iconv.conv(to, from, i)}
-	      else
-	        Iconv.conv(to, from, target)
+	        target.map{|i| to.nil? || to.empty? ? i : i.encode(to)}
+        else
+          to.nil? || to.empty? ? target : target.encode(to)
 	      end
 	    end
 	  end
 	  
 	  def encode(target)
-	    transfer(FM_ENCODING_FROM, FM_ENCODING_TO, target);
+	    transfer(FM_ENCODING_FROM, FM_ENCODING_TO, target)
 	  end
 	  
 	  def decode(target)
-	    transfer(FM_ENCODING_TO, FM_ENCODING_FROM, target);
-	  end
+	    transfer(FM_ENCODING_TO, FM_ENCODING_FROM, target)
+    end
 	  
     def hsize(size)
       size = size/1024
