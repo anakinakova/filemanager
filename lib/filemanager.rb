@@ -27,8 +27,8 @@ FM_UNKNOWN_TYPE = 'unknown'
 FM_LOCK_PATH     = '/files/resources'
 FM_ENCODING_TO   = 'UTF-8'
 FM_ENCODING_FROM = ''
-
-FM_TEMP_DIR      = '/files/temp'
+FM_RESOURCES_PATH = 'public/files/resources'
+FM_TEMP_DIR      = 'public/files/temp'
 require 'filemanager/railtie' if defined?(Rails)
 module Filemanager
 
