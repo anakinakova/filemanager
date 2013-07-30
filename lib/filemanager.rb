@@ -30,7 +30,6 @@ FM_ENCODING_FROM = ''
 
 FM_TEMP_DIR      = '/files/temp'
 require 'filemanager/railtie' if defined?(Rails)
-require 'filemanager/engine' if defined?(Rails)
 module Filemanager
 
 end
